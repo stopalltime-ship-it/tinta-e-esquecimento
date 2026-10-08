@@ -1,0 +1,36 @@
+name: Testar e gerar demo Windows
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: x64
+          cache: pip
+      - name: Instalar dependências
+        run: python -m pip install -r requirements-build.txt
+      - name: Testar, compilar e verificar executável
+        run: python build_windows.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Tinta-e-Esquecimento-Windows
+          path: dist/Tinta-e-Esquecimento-Windows.zip
+          if-no-files-found: error
+      - name: Publicar download da demo
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: demo-${{ github.run_number }}
+          TARGET_SHA: ${{ github.sha }}
+        run: gh release create "$env:RELEASE_TAG" "dist/Tinta-e-Esquecimento-Windows.zip" --target "$env:TARGET_SHA" --title "Tinta e Esquecimento - demo de 3 fases" --notes-file RELEASE_NOTES.md

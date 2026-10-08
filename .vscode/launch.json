@@ -1,0 +1,11 @@
+{
+  "version": "0.2.0",
+  "configurations": [{
+    "name": "Jogar Tinta e Esquecimento",
+    "type": "debugpy",
+    "request": "launch",
+    "program": "${workspaceFolder}/main.py",
+    "console": "integratedTerminal",
+    "cwd": "${workspaceFolder}"
+  }]
+}

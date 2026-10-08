@@ -1,0 +1,27 @@
+TINTA E ESQUECIMENTO - DEMO 0.1
+
+1. Extraia o ZIP inteiro.
+2. Abra a pasta TintaEEsquecimento.
+3. Execute TintaEEsquecimento.exe.
+Mantenha assets e _internal junto ao executável. Não execute dentro do ZIP.
+
+WASD ou setas: mover
+Espaço: rabisco (6 tinta)
+Q: lança (18 tinta)
+E: escudo por 3 segundos (24 tinta)
+B: ponte por 8 segundos, nas bordas marcadas da fase 2 (20 tinta)
+F: ler, escrever no círculo ou avançar pelo livro de saída
+Esc: pausa
+M: ligar/desligar som
+Enter: confirmar menus e textos
+
+Colete três fragmentos dourados em cada fase. Livros verdes recuperam
+tinta e vida com F. A leitura pausa o combate. No capítulo 3, reúna os
+fragmentos e pressione F no círculo central antes de combater o chefe.
+Use os ataques na direção em que Ilo está olhando (último movimento).
+O Revisor apaga lanças e escudos a cada sete segundos.
+Ao perder, Enter reinicia a fase atual. Não há salvamento entre sessões.
+O nome no final aparece apenas na sessão local; não é enviado pela rede.
+
+Fonte e instruções para VS Code:
+https://github.com/stopalltime-ship-it/tinta-e-esquecimento
