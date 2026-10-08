@@ -2,9 +2,11 @@
 
 Uma biblioteca está sendo apagada pelo Vazio. Ilo, uma criatura de tinta nascida de um livro inacabado, precisa reunir histórias e enfrentar O Revisor antes que a última página desapareça.
 
-**Demo 0.1 de RPG de ação 2D, com três fases**, feita em Python e Pygame. Esta é a primeira versão jogável: arte geométrica original, efeitos sintetizados e regras completas do início ao final. Os assets enviados inicialmente ainda não foram integrados; veja [CREDITOS.md](CREDITOS.md).
+**Demo 0.2 de RPG de ação 2D, com três fases**, feita em Python e Pygame. Integra o personagem animado Classic Hero, três cenários e três dos sons enviados em Mygame.7z, além da biblioteca e dos efeitos desenhados em código. Veja a origem, as adaptações e as licenças em [CREDITOS.md](CREDITOS.md).
 
 ![Tela inicial da demo](docs/menu.png)
+
+![Primeiro capítulo com o personagem enviado](docs/fase1.png)
 
 ## Jogar no Windows sem instalar Python
 
@@ -46,10 +48,10 @@ python3 -m venv .venv
 | B | Desenhar ponte por 8 segundos nas bordas marcadas | 20 |
 | F | Ler, interagir ou escrever no círculo | 0 |
 | Esc | Pausar | 0 |
-| M | Ligar/desligar efeitos sonoros | 0 |
+| M | Ligar/desligar efeitos e ambientação | 0 |
 | Enter | Confirmar menu e continuar textos | 0 |
 
-Livros verdes recuperam até 65 de tinta e 20 de vida por leitura. São reutilizáveis após quatro segundos de jogo. O tempo pausa durante a leitura. Fragmentos recuperam 12 de tinta; inimigos derrotados recuperam 8. Não há salvamento entre sessões.
+Livros verdes recuperam até 65 de tinta e 20 de vida por leitura. São reutilizáveis após quatro segundos de jogo. O tempo pausa durante a leitura; a ambientação continua em volume reduzido. Fragmentos recuperam 12 de tinta; inimigos derrotados recuperam 8. Não há salvamento entre sessões.
 
 ## Três capítulos
 
@@ -67,7 +69,8 @@ Livros verdes recuperam até 65 de tinta e 20 de vida por leitura. São reutiliz
 | `game/app.py` | Eventos, loop, menus e estados de jogo |
 | `game/world.py` | Classes, colisões, inimigos, ataques e condições de vitória/derrota |
 | `game/render.py` | Desenhos e interface usando primitivas do Pygame |
-| `game/audio.py` | Efeitos sonoros sintetizados em memória |
+| `game/audio.py` | Efeitos sintetizados, confirmação de menu e ambientação OGG |
+| `game/media.py` | Carregamento dos cenários e recorte, paleta e animação do personagem |
 | `game/settings.py` | Configurações e caminhos relativos ao projeto/executável |
 | `assets/story.json` | Texto original das fases e leituras |
 | `tests/test_game.py` | Verificação das regras e transições |

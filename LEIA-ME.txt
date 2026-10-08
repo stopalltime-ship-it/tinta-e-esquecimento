@@ -1,4 +1,4 @@
-TINTA E ESQUECIMENTO - DEMO 0.1
+TINTA E ESQUECIMENTO - DEMO 0.2
 
 1. Extraia o ZIP inteiro.
 2. Abra a pasta TintaEEsquecimento.
@@ -12,7 +12,7 @@ E: escudo por 3 segundos (24 tinta)
 B: ponte por 8 segundos, nas bordas marcadas da fase 2 (20 tinta)
 F: ler, escrever no círculo ou avançar pelo livro de saída
 Esc: pausa
-M: ligar/desligar som
+M: ligar/desligar efeitos e ambientacao
 Enter: confirmar menus e textos
 
 Colete três fragmentos dourados em cada fase. Livros verdes recuperam

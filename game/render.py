@@ -1,14 +1,16 @@
-"""Arte procedural original: biblioteca, livros, criatura de tinta e interface."""
+"""Biblioteca procedural com sprites e ilustrações enviados pelo usuário."""
 import math
 import random
 import pygame
 from .settings import WIDTH, HEIGHT, BG, PAPER, MUTED, GOLD, TEAL, RED
 from .world import ROOM
+from .media import Media
 
 
 class Renderer:
     def __init__(self, screen):
         self.screen = screen
+        self.media = Media()
         self.fonts = {size: pygame.font.Font(None, size) for size in (17, 19, 21, 24, 28, 34, 42, 64, 86)}
         self.rng = random.Random(12)
         self.dust = [(self.rng.randrange(WIDTH), self.rng.randrange(HEIGHT), self.rng.uniform(.3, 1)) for _ in range(60)]
@@ -35,8 +37,13 @@ class Renderer:
         pygame.draw.rect(self.screen, color, rect, border_radius=radius)
         pygame.draw.rect(self.screen, border, rect, 1, border_radius=radius)
 
-    def background(self, t):
+    def background(self, t, scene=None):
         self.screen.fill(BG)
+        if scene is not None:
+            self.screen.blit(self.media.scene(scene,(WIDTH,HEIGHT)),(0,0))
+            veil=pygame.Surface((WIDTH,HEIGHT),pygame.SRCALPHA)
+            veil.fill((12,21,32,220))
+            self.screen.blit(veil,(0,0))
         for x, y, speed in self.dust:
             pygame.draw.circle(self.screen, (49, 65, 72), (int((x + t * speed * 7) % WIDTH), int((y - t * speed * 5) % HEIGHT)), 1)
         pygame.draw.rect(self.screen, (42, 55, 64), (24, 24, WIDTH - 48, HEIGHT - 48), 1, border_radius=4)
@@ -54,17 +61,16 @@ class Renderer:
             pygame.draw.line(self.screen, (121, 126, 112), (x - 16*s, yy), (x - 5*s, yy + 3*s), max(1, int(s)))
             pygame.draw.line(self.screen, (121, 126, 112), (x + 5*s, yy + 3*s), (x + 16*s, yy), max(1, int(s)))
 
-    def ilo(self, x, y, t, scale=1, hurt=False):
-        bob = math.sin(t * 5) * 2 * scale
-        pygame.draw.ellipse(self.screen, (13, 21, 28), (x-20*scale, y+13*scale, 40*scale, 10*scale))
-        c = RED if hurt else (30, 53, 66)
-        pygame.draw.ellipse(self.screen, TEAL, (x-16*scale, y-20*scale+bob, 32*scale, 38*scale))
-        pygame.draw.ellipse(self.screen, c, (x-14*scale, y-19*scale+bob, 28*scale, 35*scale))
-        pygame.draw.polygon(self.screen, c, [(x-10*scale,y-10*scale+bob),(x+3*scale,y-35*scale+bob),(x+10*scale,y-9*scale+bob)])
-        for dx in (-5, 5):
-            pygame.draw.ellipse(self.screen, PAPER, (x+dx*scale-2*scale,y-5*scale+bob,4*scale,7*scale))
-        pygame.draw.line(self.screen, GOLD, (x+13*scale, y+7*scale), (x+30*scale,y-18*scale), max(2,int(2*scale)))
-        pygame.draw.polygon(self.screen, PAPER, [(x+28*scale,y-14*scale),(x+38*scale,y-28*scale),(x+29*scale,y-23*scale)])
+    def ilo(self, x, y, t, scale=1, hurt=False, moving=False, facing=1):
+        bob = math.sin(t * 5) * scale
+        pygame.draw.ellipse(self.screen, (13,21,28), (x-17*scale,y+14*scale,34*scale,8*scale))
+        index=1+int(t*10)%3 if moving else 0
+        size=round(48*scale)
+        sprite=self.media.hero_frame(index,size,facing<0,hurt)
+        self.screen.blit(sprite,(round(x-size/2),round(y-size*.65+bob)))
+        direction=-1 if facing<0 else 1
+        pygame.draw.line(self.screen,GOLD,(x+14*scale*direction,y+8*scale),(x+29*scale*direction,y-15*scale),max(2,round(2*scale)))
+        pygame.draw.polygon(self.screen,PAPER,[(x+27*scale*direction,y-11*scale),(x+36*scale*direction,y-25*scale),(x+28*scale*direction,y-20*scale)])
 
     def shelf(self, rect, seed=0):
         x, y, w, h = rect
@@ -80,7 +86,7 @@ class Renderer:
         pygame.draw.line(self.screen, (171,137,95), (x+1,y+h-5), (x+w-2,y+h-5), 3)
 
     def menu(self, t, selection):
-        self.background(t)
+        self.background(t,0)
         self.text("UM RPG SOBRE O QUE PERMANECE", 80, 94, 19, TEAL)
         self.text("Tinta e", 76, 148, 86)
         self.text("Esquecimento", 76, 217, 86, GOLD)
@@ -93,6 +99,9 @@ class Renderer:
                 self.text("›", 396, rect.y+7, 28, TEAL)
         pygame.draw.circle(self.screen, (27,39,48), (846,300), 181)
         pygame.draw.circle(self.screen, (58,75,78), (846,300), 179, 1)
+        page=pygame.Rect(687,228,318,177)
+        self.screen.blit(self.media.scene(0,page.size),page)
+        pygame.draw.rect(self.screen,GOLD,page,2)
         self.book(847, 396, 6.1, PAPER)
         self.ilo(839, 305, t, 3.1)
         self.text("ILO", 846, 133, 19, TEAL, True)
@@ -102,7 +111,7 @@ class Renderer:
 
     def game(self, world, chapter):
         w = world
-        self.background(w.time)
+        self.background(w.time,w.chapter)
         self.text(f"CAPÍTULO {w.chapter+1:02d} / 03", 55, 46, 19, TEAL)
         self.text(chapter["title"], 54, 74, 42)
         self.text(f"FRAGMENTOS  {w.collected} / 3", 846, 53, 24, GOLD)
@@ -119,6 +128,12 @@ class Renderer:
                 shade = 44 + ((x*13+y*7)//32 % 3)*3
                 pygame.draw.rect(self.screen, (shade,shade+6,shade+7), (x+1,y+1,min(62,ROOM.right-x-1), min(30,ROOM.bottom-y-1)))
         pygame.draw.rect(self.screen, (110,99,79), ROOM, 3, border_radius=8)
+        # Janelas mostram os mundos preservados dentro das histórias dos livros.
+        for xx in (447,700):
+            window=pygame.Rect(xx,192,164,70)
+            self.screen.blit(self.media.scene(w.chapter,window.size),window)
+            pygame.draw.rect(self.screen,(138,113,83),window,3)
+            pygame.draw.line(self.screen,(138,113,83),window.midtop,window.midbottom,3)
         for i, gap in enumerate(w.gaps):
             pygame.draw.rect(self.screen, (211,216,204), gap)
             for j in range(17):
@@ -173,7 +188,7 @@ class Renderer:
                 pygame.draw.rect(self.screen,(37,40,42),(x-42,y+39,84,5))
                 pygame.draw.rect(self.screen,RED,(x-42,y+39,84*max(0,enemy.hp)/210,5))
         p=w.player
-        self.ilo(*p.pos,w.time,hurt=p.invulnerable > 0 and int(w.time*12)%2 == 0)
+        self.ilo(*p.pos,w.time,hurt=p.invulnerable > 0 and int(w.time*12)%2 == 0,moving=p.moving,facing=p.facing.x)
         if w.shield > 0:
             pygame.draw.circle(self.screen,TEAL,p.pos,34,2)
             self.text(f"{w.shield:.1f}",p.pos.x,p.pos.y-49,17,TEAL,True)
@@ -208,8 +223,23 @@ class Renderer:
         self.wrap(body,pygame.Rect(260,321,630,160),28,PAPER,33)
         self.text(footer,260,505,21,TEAL)
 
+    def chapter(self,index,chapter):
+        # Página ilustrada: arte lateral no livro, biblioteca vista de cima no jogo.
+        shade=pygame.Surface((WIDTH,HEIGHT),pygame.SRCALPHA)
+        shade.fill((8,15,23,220))
+        self.screen.blit(shade,(0,0))
+        self.panel(pygame.Rect(127,138,898,440),(25,36,46),(119,108,85),10)
+        art=pygame.Rect(648,195,344,270)
+        self.screen.blit(self.media.scene(index,art.size),art)
+        pygame.draw.rect(self.screen,GOLD,art,2)
+        self.text(f"CAPÍTULO {index+1:02d}",162,168,19,TEAL)
+        title_y=self.wrap(chapter['title'],pygame.Rect(162,207,450,95),42,GOLD,44)
+        self.wrap(chapter['intro'],pygame.Rect(162,title_y+17,450,245),24,PAPER,28)
+        self.text("UM MUNDO DENTRO DE UM LIVRO",820,484,17,GOLD,True)
+        self.text("ENTER  Começar",162,539,21,TEAL)
+
     def ending(self, name, t):
-        self.background(t)
+        self.background(t,2)
         self.text("CAPÍTULO FINALIZADO",WIDTH//2,92,21,TEAL,True)
         self.text("Toda história merece ser lembrada.",WIDTH//2,158,42,PAPER,True)
         self.book(WIDTH//2,350,6,PAPER)

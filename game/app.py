@@ -51,7 +51,7 @@ class Game:
             return
         key=event.key
         if key == pygame.K_m and self.state != "name":
-            self.audio.muted=not self.audio.muted
+            self.audio.toggle()
             self.world.tell("Som desligado." if self.audio.muted else "Som ligado.")
             return
         if self.state == "menu":
@@ -93,12 +93,15 @@ class Game:
             if key in (pygame.K_RETURN,pygame.K_ESCAPE): self.state="menu"
 
     def menu_action(self):
+        self.audio.play('confirm')
         if self.selection == 0: self.start_chapter(0)
         elif self.selection == 1: self.state="credits"
         else: self.running=False
 
     def update(self, dt, movement=None):
         self.time+=dt
+        ambience_chapter=0 if self.state in ('menu','credits') else self.world.chapter
+        self.audio.ambience(ambience_chapter,self.state in ('pause','reading'))
         if self.state != "play": return
         if movement is None:
             keys=pygame.key.get_pressed()
@@ -119,13 +122,13 @@ class Game:
         if self.state in ("menu","credits"):
             r.menu(self.time,self.selection)
             if self.state == "credits":
-                r.overlay("Feito de palavras e tinta", "Conceito e história: Emerson. Demo desenvolvida com assistência de IA. Arte geométrica e efeitos sonoros criados em código para este projeto. Python + Pygame. Consulte CREDITOS.md para detalhes.","ENTER  Voltar ao menu", "CRÉDITOS")
+                r.overlay("Feito de palavras e tinta", "Conceito: Emerson. Programação com assistência de IA. Sprite: GrafxKid (CC0). Fundos: CraftPix Freebies. Sons: Packsmithy, newlocknew e Kevin Luce / kevp888 (CC BY 4.0). Consulte CREDITOS.md para fontes, licenças e modificações.","ENTER  Voltar ao menu", "CRÉDITOS")
         elif self.state == "ending": r.ending(self.signature,self.time)
         else:
             chapter=self.chapters[self.world.chapter]
             r.game(self.world,chapter)
             if self.state == "chapter":
-                r.overlay(chapter["title"],chapter["intro"],"ENTER  Começar",f"CAPÍTULO {self.world.chapter+1:02d} · {chapter['subtitle']}")
+                r.chapter(self.world.chapter,chapter)
             elif self.state == "pause":
                 r.overlay("A história espera por você.","O tempo está parado. Volte quando estiver pronto para continuar escrevendo.","ENTER  Continuar    R  Reiniciar fase    BACKSPACE  Menu","PAUSA")
             elif self.state == "reading":

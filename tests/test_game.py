@@ -152,5 +152,27 @@ class Screens(unittest.TestCase):
             for state in ("chapter","play","pause","reading","defeat","name","ending","credits"):
                 g.state=state;g.draw()
 
+    def test_imported_sprite_transparency_and_animation(self):
+        media=self.game.renderer.media
+        for frame in media.hero:
+            self.assertEqual(frame.get_at((0,0)).a,0)
+            self.assertGreater(pygame.mask.from_surface(frame).count(),20)
+        self.assertNotEqual(pygame.image.tobytes(media.hero[1],'RGBA'),
+                            pygame.image.tobytes(media.hero[2],'RGBA'))
+        self.assertEqual(media.hero_frame(0,48,True).get_size(),(48,48))
+
+    def test_imported_audio_decodes_and_mutes(self):
+        audio=self.game.audio
+        self.assertGreater(audio.sounds['confirm'].get_length(),.1)
+        for chapter in range(3):
+            audio.ambience(chapter)
+            self.assertTrue(pygame.mixer.music.get_busy())
+        audio.toggle()
+        self.assertEqual(pygame.mixer.music.get_volume(),0)
+        audio.ambience(1,paused=True)
+        self.assertEqual(pygame.mixer.music.get_volume(),0)
+        audio.toggle()
+        self.assertGreater(pygame.mixer.music.get_volume(),0)
+
 
 if __name__ == "__main__": unittest.main()

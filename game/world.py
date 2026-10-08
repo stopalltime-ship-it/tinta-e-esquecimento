@@ -14,6 +14,7 @@ class Actor:
     radius: int = 15
     invulnerable: float = 0
     facing: V = field(default_factory=lambda: V(1, 0))
+    moving: bool = False
 
     @property
     def rect(self):
@@ -192,6 +193,7 @@ class World:
         self.player.invulnerable = max(0, self.player.invulnerable - dt)
         self.source_cooldowns = [max(0, c - dt) for c in self.source_cooldowns]
         movement = V(movement)
+        self.player.moving = bool(movement.length_squared())
         if movement.length_squared():
             self.player.facing = movement.normalize()
             self.move(self.player, self.player.facing * 215 * dt)
