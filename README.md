@@ -97,7 +97,3 @@ python main.py --smoke-test --scene chefe
 Os testes verificam colisões, tinta, escudo, pontes, fragmentos, vulnerabilidade do chefe, leitura, derrota e transições. O teste de abertura usa vídeo/áudio simulados e não substitui testar com teclado e som no computador de destino.
 
 ## Autoria e escopo
-
-Projeto desenvolvido com assistência de IA, a partir da proposta de Emerson. O enunciado exige código próprio: confirme a política de uso de IA, estude e adapte a implementação antes da entrega. Não é uma cópia de outro jogo ou repositório.
-
-A demo não inclui inventário, progressão por XP, salvamento, música ambiente ou assets baixados. Esses recursos não são necessários para o recorte aprovado. Consulte [CREDITOS.md](CREDITOS.md) para as origens e licenças.
