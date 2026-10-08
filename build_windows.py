@@ -24,7 +24,7 @@ def main():
     notices.mkdir(exist_ok=True)
     distribution=importlib.metadata.distribution("pygame")
     for entry in distribution.files or []:
-        if entry.name.lower() in ("copying","license","license.txt","copying.txt"):
+        if entry.name.lower() in ("copying","license","license.txt","copying.txt","lgpl.txt"):
             origin=Path(distribution.locate_file(entry))
             if origin.is_file():
                 shutil.copy2(origin,notices/entry.name)

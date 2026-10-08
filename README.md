@@ -4,6 +4,8 @@ Uma biblioteca está sendo apagada pelo Vazio. Ilo, uma criatura de tinta nascid
 
 **Demo 0.1 de RPG de ação 2D, com três fases**, feita em Python e Pygame. Esta é a primeira versão jogável: arte geométrica original, efeitos sintetizados e regras completas do início ao final. Os assets enviados inicialmente ainda não foram integrados; veja [CREDITOS.md](CREDITOS.md).
 
+![Tela inicial da demo](docs/menu.png)
+
 ## Jogar no Windows sem instalar Python
 
 Abra [Releases](https://github.com/stopalltime-ship-it/tinta-e-esquecimento/releases), escolha a demo mais recente e baixe `Tinta-e-Esquecimento-Windows.zip`. Extraia todo o ZIP e execute `TintaEEsquecimento.exe`. As pastas `assets` e `_internal` devem permanecer ao lado dele. A disponibilidade da build depende da conclusão bem-sucedida do workflow em [Actions](https://github.com/stopalltime-ship-it/tinta-e-esquecimento/actions).
