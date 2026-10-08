@@ -1,0 +1,14 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Preparar Python para jogar",
+      "type": "process",
+      "command": "cmd.exe",
+      "args": ["/d", "/c", "preparar_windows.bat", "--sem-pausa"],
+      "options": {"cwd": "${workspaceFolder}"},
+      "problemMatcher": [],
+      "presentation": {"reveal": "always", "panel": "dedicated"}
+    }
+  ]
+}

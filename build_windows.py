@@ -1,10 +1,12 @@
 """Gera a entrega Windows completa. Execute este script em Windows."""
 from pathlib import Path
 import importlib.metadata
+import hashlib
 import os
 import shutil
 import subprocess
 import sys
+from build_source import build_source
 
 
 def main():
@@ -14,7 +16,7 @@ def main():
     os.chdir(root)
     subprocess.run([sys.executable,"-m","unittest","discover","-s","tests","-v"],check=True)
     subprocess.run([sys.executable,"-m","PyInstaller","--noconfirm","--clean","--onedir",
-                    "--windowed","--name","TintaEEsquecimento","main.py"],check=True)
+                    "--windowed","--noupx","--name","TintaEEsquecimento","main.py"],check=True)
     output=root/"dist"/"TintaEEsquecimento"
     shutil.copytree(root/"assets",output/"assets",dirs_exist_ok=True)
     for name in ("LEIA-ME.txt","CREDITOS.md"):
@@ -31,6 +33,11 @@ def main():
     subprocess.run([str(output/"TintaEEsquecimento.exe"),"--smoke-test","--scene","chefe"],check=True,timeout=30)
     # A pasta assets permanece ao lado do .exe, como pede a atividade.
     archive=shutil.make_archive(str(root/"dist"/"Tinta-e-Esquecimento-Windows"),"zip",root/"dist","TintaEEsquecimento")
+    source=build_source()
+    checksums=[]
+    for package in (Path(archive),source):
+        checksums.append(f"{hashlib.sha256(package.read_bytes()).hexdigest()}  {package.name}\n")
+    (root/"dist"/"SHA256SUMS.txt").write_text("".join(checksums),encoding="utf-8")
     print(f"Entrega criada: {archive}")
 
 

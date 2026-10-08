@@ -3,5 +3,6 @@ __pycache__/
 *.pyc
 build/
 dist/
+logs/
 *.spec
 .DS_Store

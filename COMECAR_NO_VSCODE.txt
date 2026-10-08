@@ -1,0 +1,28 @@
+TINTA E ESQUECIMENTO - CODIGO PYTHON PARA VS CODE
+
+Este pacote contem main.py, game e assets. O jogo abre em uma janela do Pygame.
+
+NO WINDOWS
+1. Instale Python 3.12 de 64 bits (python.org), VS Code e as extensoes
+   Python e Python Debugger da Microsoft. O Python Launcher ou a opcao
+   Add Python to PATH do instalador permitem localizar o Python.
+2. Extraia TODO o ZIP. Nao execute arquivos dentro do ZIP.
+3. Abra preparar_windows.bat uma vez. Ele cria .venv e instala Pygame.
+   Essa primeira preparacao precisa de internet. Aguarde a mensagem Pronto.
+4. No VS Code, use Arquivo > Abrir Pasta e escolha a pasta que contem main.py.
+5. Pressione F5 e escolha Jogar Tinta e Esquecimento, se solicitado.
+   A configuracao confere as dependencias e usa o Python da pasta .venv.
+
+Voce tambem pode abrir jogar.bat na pasta extraida, sem usar VS Code.
+Ele prepara o ambiente automaticamente se for necessario.
+Nao e preciso executar ou liberar o .exe para jogar por Python.
+
+SE NAO ABRIR
+- Se Python nao foi encontrado, instale a versao 3.12 e reinicie o VS Code.
+- Se F5 nao encontrar o jogo, confira que abriu a pasta que CONTEM main.py.
+- Se a instalacao falhar, consulte logs\preparacao.txt.
+- Se o jogo falhar depois da instalacao, consulte logs\erro-jogo.txt.
+- Envie o texto do erro para que seja possivel identificar a causa.
+
+No Linux/macOS, veja os comandos de preparacao no README.md.
+As instrucoes e os controles completos estao no README.md.

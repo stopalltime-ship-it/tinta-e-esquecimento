@@ -21,16 +21,29 @@ jobs:
           cache: pip
       - name: Instalar dependências
         run: python -m pip install -r requirements-build.txt
+      - name: Gerar e verificar pacote de código para VS Code
+        run: |
+          python build_source.py
+          Expand-Archive -Path dist/Tinta-e-Esquecimento-Fonte.zip -DestinationPath "dist/validacao do fonte"
+          Push-Location "dist/validacao do fonte/Tinta-e-Esquecimento-Fonte"
+          cmd /d /c preparar_windows.bat --sem-pausa
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmd /d /c jogar.bat --smoke-test --scene chefe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Pop-Location
       - name: Testar, compilar e verificar executável
         run: python build_windows.py
       - uses: actions/upload-artifact@v4
         with:
-          name: Tinta-e-Esquecimento-Windows
-          path: dist/Tinta-e-Esquecimento-Windows.zip
+          name: Tinta-e-Esquecimento-pacotes
+          path: |
+            dist/Tinta-e-Esquecimento-Windows.zip
+            dist/Tinta-e-Esquecimento-Fonte.zip
+            dist/SHA256SUMS.txt
           if-no-files-found: error
       - name: Publicar download da demo
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: demo-${{ github.run_number }}
           TARGET_SHA: ${{ github.sha }}
-        run: gh release create "$env:RELEASE_TAG" "dist/Tinta-e-Esquecimento-Windows.zip" --target "$env:TARGET_SHA" --title "Tinta e Esquecimento - demo de 3 fases" --notes-file RELEASE_NOTES.md
+        run: gh release create "$env:RELEASE_TAG" "dist/Tinta-e-Esquecimento-Windows.zip" "dist/Tinta-e-Esquecimento-Fonte.zip" "dist/SHA256SUMS.txt" --target "$env:TARGET_SHA" --title "Tinta e Esquecimento - Python para VS Code e demo Windows" --notes-file RELEASE_NOTES.md

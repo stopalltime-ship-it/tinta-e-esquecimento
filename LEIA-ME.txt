@@ -25,3 +25,16 @@ O nome no final aparece apenas na sessão local; não é enviado pela rede.
 
 Fonte e instruções para VS Code:
 https://github.com/stopalltime-ship-it/tinta-e-esquecimento
+
+Para VS Code, baixe Tinta-e-Esquecimento-Fonte.zip na release mais recente.
+Extraia tudo, execute preparar_windows.bat uma vez, abra a pasta que contem
+main.py no VS Code e pressione F5.
+Python 3.12 e as extensoes Python e Python Debugger da Microsoft sao necessarios.
+
+Se o antivirus bloquear este executavel, mantenha a protecao ativa e anote
+o texto exato do alerta. A build nao tem assinatura digital. Aviso de
+aplicativo desconhecido e deteccao de ameaca precisam de diagnosticos distintos.
+Voce pode jogar pelo pacote Fonte sem executar ou liberar o .exe.
+
+Se o jogo iniciar e falhar, o aviso informa o local de logs/erro-jogo.txt.
+Um bloqueio antes da inicializacao impede a criacao desse arquivo.
