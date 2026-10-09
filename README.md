@@ -1,8 +1,8 @@
-# Tinta e Esquecimento
+# Tinta e Esquecimento — Demo 0.1
 
 Uma biblioteca está sendo apagada pelo Vazio. Ilo, uma criatura de tinta nascida de um livro inacabado, precisa reunir histórias e enfrentar O Revisor antes que a última página desapareça.
 
-**Demo 0.2 de RPG de ação 2D, com três fases**, feita em Python e Pygame. Integra o personagem animado Classic Hero, três cenários e três dos sons enviados em Mygame.7z, além da biblioteca e dos efeitos desenhados em código. Veja a origem, as adaptações e as licenças em [CREDITOS.md](CREDITOS.md).
+**Demo 0.1 de RPG de ação 2D, com três fases**, feita em Python e Pygame. Integra o personagem animado Classic Hero, três cenários e três dos sons enviados em Mygame.7z, além da biblioteca e dos efeitos desenhados em código. Veja a origem, as adaptações e as licenças em [CREDITOS.md](CREDITOS.md).
 
 ![Tela inicial da demo](docs/menu.png)
 
